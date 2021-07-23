@@ -1,8 +1,4 @@
 requests
 simplejson
-json5
-time
 datetime
-platform
-os
 argparse
