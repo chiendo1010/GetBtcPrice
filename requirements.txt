@@ -1,5 +1,6 @@
 requests
-json
+simplejson
+json5
 time
 datetime
 platform
