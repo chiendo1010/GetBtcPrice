@@ -32,16 +32,17 @@ while True:
         url = requests.get(Api)
         data = url.json()
         Price = float(data['price'])
+        CurrentTime = str(datetime.datetime.now())
+
+        if(i%10 == 0):
+            print("{:0<.2f} <== BTC price -- Time: {}".format(Price, CurrentTime[:-7] ))
+        else:
+            print(Price)
     except:
         print("An exception occurred")
 
     
-    CurrentTime = str(datetime.datetime.now())
-
-    if(i%10 == 0):
-        print("{:0<.2f} <== BTC price -- Time: {}".format(Price, CurrentTime[:-7] ))
-    else:
-        print(Price)
+    
 
     i += 1
     time.sleep(args.time)
