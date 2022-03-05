@@ -8,6 +8,7 @@ import os
 import argparse
 # ----------------------------------------------------------------------------------------
 Api = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'
+# ApiUsdt = 'https://api.binance.com/api/v3/ticker/price?symbol=USDTBVND'
 # ----------------------------------------------------------------------------------------
 BuyPrice = 69500
 TargetPercent = 1
@@ -18,6 +19,13 @@ def parser():
     parser.add_argument("--time", type=int, default="60", help="Give me time to re-get new price. Ex: --time 60")
     return parser.parse_args()
 
+# ----------------------------------------------------------------------------------------
+def GetPriceFromApi(symbol):
+    Api = 'https://api.binance.com/api/v3/ticker/price?symbol='
+    output = requests.get(Api+symbol)
+    data = output.json()
+    Price = float(data['price'])
+    return Price
 # ----------------------------------------------------------------------------------------
 def main():
     if(platform.system() == 'Linux'):
@@ -35,18 +43,18 @@ def main():
 
     while True:
         try:
-            url = requests.get(Api)
-            data = url.json()
-            Price = float(data['price'])
+            Price = GetPriceFromApi('BTCUSDT')
+            # PriceUsdt = GetPriceFromApi('USDTBVND')
+            PriceUsdt = 0
             CurrentTime = str(datetime.datetime.now())
 
             Percent = (Price - BuyPrice) / BuyPrice
             Percent = Percent * 100
 
             if(i%10 == 0):
-                print("\n{:0<.2f} <== BTC price -- Time: {}".format(Price, CurrentTime[:-7] ))
+                print("\nBTC: {:0<.2f}, USDT: {:0<.2f} price -- Time: {}".format(Price, PriceUsdt, CurrentTime[:-7] ))
             else:
-                print("Price: {:0<.2f} \t\t\t Profit: {:0<.2f}%".format(Price, Percent))
+                print("BTC: {:0<.2f}, USDT: {:0<.2f}  \t\t\t Profit: {:0<.2f}%".format(Price, PriceUsdt, Percent))
             
             CheckPriceJump(Percent)
             
